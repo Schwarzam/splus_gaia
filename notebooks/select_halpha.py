@@ -25,6 +25,15 @@ ERR_COL = {
     'J0430': 'err_mag_pstotal_j0430','J0515': 'err_mag_pstotal_j0515','J0660': 'err_mag_pstotal_j0660','J0861': 'err_mag_pstotal_j0861'
 }
 
+# replace all with psf
+for key in list(MAG_COL.keys()):
+    new_key = MAG_COL[key].replace("pstotal", "psf")
+    MAG_COL[key] = new_key
+    
+for key in list(ERR_COL.keys()):
+    new_key = ERR_COL[key].replace("pstotal", "psf")
+    ERR_COL[key] = new_key
+
 BANDS = ['u','J0378','J0395','J0410','J0430','g','J0515','r','J0660','i','J0861','z']
 
 
@@ -250,23 +259,30 @@ dtypes = {
     "err_mag_pstotal_j0861": "float32",
 }
 
+# replace pstotal with psf
+for key in list(dtypes.keys()):
+    if "pstotal" in key:
+        new_key = key.replace("pstotal", "psf")
+        dtypes[new_key] = dtypes.pop(key)
+
+print(dtypes)
 print("Loading data...")
 df = pd.read_csv(
-    "/mnt/hdcasa/splus_gaia/oficial/SPLUS-s.csv",
+    "/mnt/hdcasa/splus_gaia/oficial/SPLUS-b_SPLUS-d.csv",
     engine="pyarrow",
     dtype=dtypes,
     usecols=list(dtypes.keys())
 )
 
 print("Filtering data...")
-df = df[(df['mag_pstotal_r'] > 12) & (df['mag_pstotal_r'] < 22)]
+df = df[(df['mag_psf_r'] > 12) & (df['mag_psf_r'] < 22)]
 
 print("Selecting H-alpha emitters...")
 results, emitters = detect_halpha_emitters(df, ew_min=30.0, snr_min=3.0)
 emitters_df = df[emitters].join(results)
 
 print("Applying final cuts...")
-emitters_df = emitters_df[emitters_df['mag_pstotal_j0660'] < emitters_df['mag_pstotal_i']]
+emitters_df = emitters_df[emitters_df['mag_psf_j0660'] < emitters_df['mag_psf_i']]
 
 print("Saving results...")
-emitters_df.to_csv("../data/halpha_emitters/SPLUS-s2.csv", index=False)
+emitters_df.to_csv("../data/halpha_emitters-gustabin/SPLUS-b_SPLUS-d.csv", index=False)

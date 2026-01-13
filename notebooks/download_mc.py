@@ -5,7 +5,7 @@ outdir = '/mnt/hdcasa/splus_gaia/mc_catalogs/'
 conn = splusdata.Core()
 
 
-for i in range(1, 170):
+for i in range(1, 150):
     print(f'Downloading MC{i:04d}')
     try:
         query = f"""

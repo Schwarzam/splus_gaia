@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=67", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mizatools"
+version = "0.1"
+description = "Tools for astronomical analysis"
+authors = [
+    { name = "Marina", email = "marina.izabela.mi@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "Apache-2.0" }
+keywords = ["S-PLUS", "astronomy", "catalogs", "FITS"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]

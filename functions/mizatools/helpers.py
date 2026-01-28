@@ -41,7 +41,7 @@ def unique_by_sep(ra_deg, dec_deg, min_sep_arcsec=2.0):
                 keep[j] = False
 
     return keep
-def match_emitters_to_clusters_chunked(
+def match_emitters_to_clusters(
     clusters: pd.DataFrame,
     stars: pd.DataFrame,
     *,
